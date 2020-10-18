@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Users_Web_App_JSF_CDI_Beans" />
+        <module name="asynchronousChat" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Users_Web_App_JSF_CDI_Beans" target="1.8" />
+      <module name="asynchronousChat" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
