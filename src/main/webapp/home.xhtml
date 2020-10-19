@@ -4,9 +4,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html">
    <h:head>
-
+      <title>"#{msgs.homeTitle}"</title>
    </h:head>
    <h:body>
-      :)
+      #{home.justRegistered ? msgs.homeJustRegistered : ''}
+      <h:panelGrid columns="2">
+         <h:form>
+            <h:commandButton value="#{msgs.homeLogoutButton}" action="#{home.doLogout}"/>
+         </h:form>
+      </h:panelGrid>
    </h:body>
 </html>

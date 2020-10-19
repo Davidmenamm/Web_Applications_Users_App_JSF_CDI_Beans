@@ -17,8 +17,11 @@
             <h:inputSecret value="#{register.password}"/>
             #{msgs.confirmPasswordPrompt}
             <h:inputSecret value="#{register.confirmPassword}"/>
+            <h:outputText value="#{register.passwordError ? msgs.registerPasswordErrorMessage : ''}" style="color: darkred"/>
+            <h:outputText value="#{register.registerError ? msgs.registerErrorMessage : ''}" style="color: darkred"/>
          </h:panelGrid>
-         <h:commandButton value="#{msgs.registerButton}" action="#{database.register(register.username, register.password)}"/>
+         <h:commandButton value="#{msgs.registerButton}" action="#{register.doRegister}"/>
+         <h:commandButton value="#{msgs.registerBackButton}" action="login"/>
       </h:form>
    </h:body>
 </html>

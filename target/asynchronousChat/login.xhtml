@@ -15,8 +15,9 @@
             <h:inputText value="#{login.username}"/>
             #{msgs.passwordPrompt}
             <h:inputSecret value="#{login.password}"/>
+            <h:outputText value="#{login.loginError ? msgs.loginErrorMessage : ''}" style="color: darkred"/>
          </h:panelGrid>
-         <h:commandButton value="#{msgs.loginButton}" action="#{database.checkLogin(login.username, login.password)}"/>
+         <h:commandButton value="#{msgs.loginButton}" action="#{login.doLogin}"/>
          <h:commandButton value="#{msgs.goToRegisterButton}" action="register"/>
       </h:form>
    </h:body>
