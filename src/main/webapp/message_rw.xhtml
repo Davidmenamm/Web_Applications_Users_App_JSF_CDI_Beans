@@ -51,7 +51,7 @@
                      <td> <h:outputText value="#{msg[3]}" /></td>
                   </tr>
                   <tr>
-                     <td><h:commandButton action="#{message_rw.deleteMyMessage(msg)}"/></td>
+                     <td><h:button value="Delete" onclick="#{message_rw.deleteMyMessage(msg)}"/></td>
                   </tr>
                </h:panelGrid>
             </ui:repeat>
