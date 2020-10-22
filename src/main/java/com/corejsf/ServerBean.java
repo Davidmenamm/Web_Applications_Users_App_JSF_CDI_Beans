@@ -17,6 +17,7 @@ import java.util.List;
 public class ServerBean implements Serializable {
    // Static field needed
    private HashMap<String, UserBean> users;
+   private HashMap<String, ArrayList<String[]>> messages;
    @Inject
    private DatabaseBean db;
    @EJB
@@ -27,6 +28,7 @@ public class ServerBean implements Serializable {
 
    public ServerBean(){
       users = new HashMap<>();
+      messages = new HashMap<>();
       ArrayList<String> registeredUsers = db.getUsers();
 
       for(String u:registeredUsers) {
@@ -47,8 +49,21 @@ public class ServerBean implements Serializable {
       return userList;
    }
 
+   public ArrayList<String[]> getMessagesTo(String userReq){
+      return messages.get(userReq);
+   }
+
+   public void sendMessage(String[] newMessage){
+      getMessagesTo(newMessage[1]).add(newMessage);
+   }
+
+   public void deleteMessage(String[] oldMessage){
+      getMessagesTo(oldMessage[1]).remove(oldMessage);
+   }
+
    public void register(String username){
       users.put(username, new UserBean(username));
+      messages.put(username, new ArrayList<String[]>());
    }
 
    public void login(String username){

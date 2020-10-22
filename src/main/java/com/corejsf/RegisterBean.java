@@ -41,7 +41,6 @@ public class RegisterBean implements Serializable {
     public Boolean getRegisterError() {        return registerError;    }
     public void setRegisterError(Boolean registerError) {        this.registerError = registerError;    }
 
-
     public String doRegister(){
         // Check password confirmation
         if(!password.equals(confirmPassword)){

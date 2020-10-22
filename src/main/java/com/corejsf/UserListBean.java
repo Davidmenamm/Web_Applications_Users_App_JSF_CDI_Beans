@@ -3,6 +3,7 @@ package com.corejsf;
 
 // import(s)
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -45,8 +46,12 @@ public class UserListBean implements Serializable {
         return selectedUser;
     }
     public void setSelectedUser(String selectedUser) {
+        System.out.println(selectedUser);
         this.selectedUser = selectedUser;
     }
+//    public void selectionChanged(ValueChangeEvent e){
+//        setSelectedUser((String) e.getNewValue());
+//    }
     public List<String> getUsers() {
         Map<String,Object> usersMap = getUserList();
         this.users = new ArrayList<>(usersMap.keySet());
