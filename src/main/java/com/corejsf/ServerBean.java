@@ -1,6 +1,7 @@
 package com.corejsf;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,19 +12,20 @@ import java.util.HashMap;
 @Named("server") // or @ManagedBean(name="login")
 public class ServerBean implements Serializable {
    // Static field needed
-   private static HashMap<String, UserBean> users;
-
+   private HashMap<String, UserBean> users;
+   @Inject
+   private DatabaseBean db;
 
    public ServerBean(){
       users = new HashMap<>();
-      ArrayList<String> registeredUsers = DatabaseBean.getUsers();
+      ArrayList<String> registeredUsers = db.getUsers();
 
       for(String u:registeredUsers) {
          users.put(u, new UserBean(u));
       }
    }
 
-   public static HashMap<String, Boolean> getUsersOnlineList() {
+   public HashMap<String, Boolean> getUsersOnlineList() {
       HashMap<String, Boolean> userList = new HashMap<>();
 
       for(HashMap.Entry<String, UserBean> entry : users.entrySet()){
@@ -36,15 +38,15 @@ public class ServerBean implements Serializable {
       return userList;
    }
 
-   public static void register(String username){
+   public void register(String username){
       users.put(username, new UserBean(username));
    }
 
-   public static void login(String username){
+   public void login(String username){
       users.get(username).setOnline(true);
    }
 
-   public static void logout(String username){
+   public void logout(String username){
       users.get(username).setOnline(false);
    }
 
