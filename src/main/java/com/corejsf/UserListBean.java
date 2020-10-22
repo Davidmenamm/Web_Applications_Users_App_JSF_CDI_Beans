@@ -3,12 +3,11 @@ package com.corejsf;
 
 // import(s)
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,25 +19,26 @@ import java.io.IOException;
 public class UserListBean implements Serializable {
     // atributes
     private String selectedUser;
-    private static Map<String,Object> userList;
-    static{
+    @Inject
+    private ServerBean sb;
+
+    private static Map<String,Object> userList = new LinkedHashMap<String, Object>();
+    private List<String> users = new ArrayList<>();
+
+    // getter and setter
+    public Map<String,Object> getUserList() {
         try{
             System.out.println("TEST!");
             // get users list keys / names
-            ArrayList<String> userNames = DatabaseBean.getUsers();
-            // set users list visual map
-            userList = new LinkedHashMap<String,Object>();
-            for (String name : userNames){
-                userList.put(name,name);
+            userList.clear();
+            HashMap<String, Boolean> userOnlineList = sb.getUsersOnlineList();
+            for ( String name : userOnlineList.keySet() ){
+                userList.put(name,userOnlineList.get(name));
             }
         } catch(Exception e){
             System.out.println(e);
             e.printStackTrace();
         }
-    }
-
-    // getter and setter
-    public Map<String,Object> getUserList() {
         return userList;
     }
     public String getSelectedUser() {
@@ -46,6 +46,14 @@ public class UserListBean implements Serializable {
     }
     public void setSelectedUser(String selectedUser) {
         this.selectedUser = selectedUser;
+    }
+    public List<String> getUsers() {
+        Map<String,Object> usersMap = getUserList();
+        this.users = new ArrayList<>(usersMap.keySet());
+        return this.users;
+    }
+    public void setUsers(List<String> users) {
+        this.users = users;
     }
 }
 
