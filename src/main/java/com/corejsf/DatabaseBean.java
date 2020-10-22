@@ -14,6 +14,10 @@ public class DatabaseBean implements Serializable {
    // Static field needed
    private static HashMap<String, String> userPasswords = new HashMap<>();
 
+   public static ArrayList<String> getUsers(){
+      String[] list = (String[])userPasswords.keySet().toArray(new String[userPasswords.size()]);
+      return new ArrayList<String>(Arrays.asList(list));
+   }
 
    public static Boolean checkLogin(String user, String password){
       // Check login credentials
@@ -39,10 +43,4 @@ public class DatabaseBean implements Serializable {
          return true;
       }
    }
-
-   public static ArrayList<String> getUsers(){
-      String[] list = (String[])userPasswords.keySet().toArray(new String[userPasswords.size()]);
-      return new ArrayList<String>(Arrays.asList(list));
-   }
-
 }

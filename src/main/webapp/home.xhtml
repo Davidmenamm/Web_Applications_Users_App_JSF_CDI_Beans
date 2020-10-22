@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
    <h:head>
       <title>"#{msgs.homeTitle}"</title>
    </h:head>
@@ -13,5 +14,17 @@
             <h:commandButton value="#{msgs.homeLogoutButton}" action="#{home.doLogout}"/>
          </h:form>
       </h:panelGrid>
+      <h:outputText value="#{msgs.usersListTitle}"
+                    style="font-style: italic; font-size: 1.5rem"/>
+      <h:outputText value="#{userlist.usrList}"
+                    style="font-style: italic; font-size: 1.5rem"/>
+      <h:form>
+         <h:selectOneListbox value="#{userList.selectedUser}">
+            <f:selectItems value="#{userList.userList}" />
+         </h:selectOneListbox>
+         <br />
+         <h:commandButton value="Submit" action="result" />
+         <h:commandButton value="Reset" type="reset" />
+      </h:form>
    </h:body>
 </html>
