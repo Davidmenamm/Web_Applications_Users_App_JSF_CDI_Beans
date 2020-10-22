@@ -1,11 +1,15 @@
 package com.corejsf;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.push.Push;
+import javax.faces.push.PushContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 // or import javax.faces.bean.SessionScoped;
 @ApplicationScoped
@@ -15,6 +19,11 @@ public class ServerBean implements Serializable {
    private HashMap<String, UserBean> users;
    @Inject
    private DatabaseBean db;
+   @EJB
+   private UserListUpdate updList;
+   @Inject
+   @Push
+   private PushContext incoming;
 
    public ServerBean(){
       users = new HashMap<>();
@@ -49,5 +58,22 @@ public class ServerBean implements Serializable {
    public void logout(String username){
       users.get(username).setOnline(false);
    }
+
+   // list re-render
+   private String enteredMessage;
+   public List<String> getMessages() {
+      return updList.getMessages();
+   }
+   public void onSendMessage() {
+      updList.add(enteredMessage);
+      incoming.send("newmessage");
+   }
+   public void setEnteredMessage(String inputMessage){
+      enteredMessage = inputMessage;
+   }
+   public String getEnteredMessage(){
+      return enteredMessage;
+   }
+
 
 }

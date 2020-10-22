@@ -3,7 +3,8 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f1="http://java.sun.com/jsf/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
    <h:head>
       <title>"#{msgs.homeTitle}"</title>
    </h:head>
@@ -20,11 +21,17 @@
                     style="font-style: italic; font-size: 1.5rem"/>
       <h:form>
          <h:selectOneListbox value="#{userList.selectedUser}">
-            <f:selectItems value="#{userList.users}" />
+            <f1:selectItems value="#{userList.users}" />
          </h:selectOneListbox>
          <br />
          <h:commandButton value="Submit" action="result" />
          <h:commandButton value="Reset" type="reset" />
+         <br />
+         <h:commandButton value="update" action="#{server.onSendMessage}"/>
+         <f:websocket channel="incoming">
+            <f:ajax event="newmessage"
+                    execute="@form" render="@form"/>
+         </f:websocket>
       </h:form>
    </h:body>
 </html>
