@@ -3,34 +3,36 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f1="http://java.sun.com/jsf/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
    <h:head>
-      <title>"#{msgs.homeTitle}"</title>
+      <title>#{msgs.homeTitle}</title>
    </h:head>
    <h:body>
-      #{home.justRegistered ? msgs.homeJustRegistered : ''}
-      <h:panelGrid columns="2">
-         <h:form>
-            <h:commandButton value="#{msgs.homeLogoutButton}" action="#{home.doLogout}"/>
-         </h:form>
-      </h:panelGrid>
-      <h:outputText value="#{msgs.usersListTitle}"
-                    style="font-style: italic; font-size: 1.5rem"/>
-      <h:outputText value="#{userlist.usrList}"
-                    style="font-style: italic; font-size: 1.5rem"/>
       <h:form>
-         <h:selectOneListbox value="#{userList.selectedUser}">
-            <f1:selectItems value="#{userList.users}" />
-         </h:selectOneListbox>
-         <br />
-         <h:commandButton value="Submit" action="message_rw" />
-         <h:commandButton value="Reset" type="reset" />
-         <br />
-         <h:commandButton value="update" action="#{server.onSendMessage}"/>
-         <f:websocket channel="incoming">
-            <f:ajax event="newmessage"
-                    execute="@form" render="@form"/>
+         <h:commandButton value="#{msgs.homeLogoutButton}" action="#{home.doLogout}"/>
+         <br/>
+         <h:outputText value="#{msgs.usersListTitle}"
+                       style="font-style: italic; font-size: 1.5rem"/>
+      </h:form>
+<!--      <h:panelGrid columns="2" width="50%" id="visualUserList">-->
+<!--         <ui:repeat  value="#{userListBean.namesList}" var="username">-->
+<!--            <h:outputText value="#{username}"/><h:button value="send"/>-->
+<!--         </ui:repeat>-->
+<!--      </h:panelGrid>-->
+      <h:dataTable id="visualUserList" var="username" value="#{userListBean.namesList}">
+         <h:column>
+            <h:outputText value="#{username}"/>
+         </h:column>
+         <h:column>
+            <h:outputText value="#{userListBean.getUserOnline(username)}"/>
+         </h:column>
+      </h:dataTable>
+      <h:form id="UserListForm">
+         <f:websocket channel="UserListChannel" onmessage="function x() {
+           console.log('Event activation received')
+         }">
+            <f:ajax event="UpdateListEvent"
+                    execute=":visualUserList" render=":visualUserList"/>
          </f:websocket>
       </h:form>
    </h:body>

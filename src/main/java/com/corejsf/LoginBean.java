@@ -47,7 +47,7 @@ public class LoginBean implements Serializable {
 
          home.setJustRegistered(false);
 
-         return "home";
+         return "home?faces-redirect=true";
       }
       else {
          loginError = true;

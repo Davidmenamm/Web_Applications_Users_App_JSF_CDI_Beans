@@ -1,52 +1,52 @@
 package com.corejsf;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.push.Push;
 import javax.faces.push.PushContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
-// or import javax.faces.bean.SessionScoped;
 @ApplicationScoped
 @Named("server") // or @ManagedBean(name="login")
 public class ServerBean implements Serializable {
    // Static field needed
-   private HashMap<String, UserBean> users;
-   private HashMap<String, ArrayList<String[]>> messages;
+   private final HashMap<String, UserBean> users;
+   private final HashMap<String, ArrayList<String[]>> messages;
    @Inject
    private DatabaseBean db;
    @EJB
    private UserListUpdate updList;
+
    @Inject
    @Push
-   private PushContext incoming;
+   private PushContext UserListChannel;
+
+
+//   @PostConstruct
+//   private void init(){}
 
    public ServerBean(){
       users = new HashMap<>();
       messages = new HashMap<>();
-      ArrayList<String> registeredUsers = db.getUsers();
-
-      for(String u:registeredUsers) {
-         users.put(u, new UserBean(u));
-      }
+//      if(db  != null){
+         Set<String> registeredUsers = db.getUsers();
+         for (String u: registeredUsers){
+            users.put(u, new UserBean(u));
+         }
+//      }
    }
 
-   public HashMap<String, Boolean> getUsersOnlineList() {
-      HashMap<String, Boolean> userList = new HashMap<>();
-
-      for(HashMap.Entry<String, UserBean> entry : users.entrySet()){
-         String username = entry.getKey();
-         UserBean userBean = entry.getValue();
-
-         userList.put(username, userBean.getOnline());
-      }
-
-      return userList;
+   public HashMap<String,UserBean> getUsers(){
+      return users;
    }
 
    public ArrayList<String[]> getMessagesTo(String userReq){
@@ -63,32 +63,22 @@ public class ServerBean implements Serializable {
 
    public void register(String username){
       users.put(username, new UserBean(username));
-      messages.put(username, new ArrayList<String[]>());
+      messages.put(username, new ArrayList<>());
    }
 
    public void login(String username){
       users.get(username).setOnline(true);
+      onChangeUserList();
    }
 
    public void logout(String username){
       users.get(username).setOnline(false);
+      onChangeUserList();
    }
 
-   // list re-render
-   private String enteredMessage;
-   public List<String> getMessages() {
-      return updList.getMessages();
+   public void onChangeUserList() {
+//      updList.putList(new ArrayList<>(users.keySet()));
+      updList.putMap(users);
+      UserListChannel.send("UpdateListEvent");
    }
-   public void onSendMessage() {
-      updList.add(enteredMessage);
-      incoming.send("newmessage");
-   }
-   public void setEnteredMessage(String inputMessage){
-      enteredMessage = inputMessage;
-   }
-   public String getEnteredMessage(){
-      return enteredMessage;
-   }
-
-
 }

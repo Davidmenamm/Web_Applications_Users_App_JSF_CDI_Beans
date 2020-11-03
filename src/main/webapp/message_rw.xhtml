@@ -17,12 +17,10 @@
 
             <h:outputText value="#{msgs.usersListTitle}"
                           style="font-style: italic; font-size: 1.5rem"/>
-            <h:outputText value="#{userlist.usrList}"
-                          style="font-style: italic; font-size: 1.5rem"/>
             <h:form>
                <p>Send to:   </p>
-               <h:selectOneMenu value="#{userList.selectedUser}" onchange="submit()">
-                  <f:selectItems value="#{userList.users}" var="userName" itemValue="#{userName}"/>
+               <h:selectOneMenu value="#{userListBean.selectedUser}" onchange="submit()">
+                  <f:selectItems value="#{userListBean.userListResponse}" var="userName" itemValue="#{userName}"/>
                </h:selectOneMenu>
                <br />
                <h:inputText value="#{message_rw.enteredMessage}" /><br/>
@@ -31,7 +29,7 @@
             </h:form>
          </div>
          <div>
-            <ui:repeat id="recieved" value="#{message_rw.myMessages}" var="msg">
+            <ui:repeat value="#{message_rw.myMessages}" var="msg">
                <h:panelGrid columns="3" style="border: 2px solid black; padding-left: 10px; margin: auto; width: 90%">
                   <tr>
                      <td style="width: 5%">From: </td>

@@ -66,7 +66,7 @@ public class RegisterBean implements Serializable {
             // Set welcome message
             home.setJustRegistered(true);
 
-            return "home";
+            return "home?faces-redirect=true";
         }
         else {
             registerError = true;

@@ -21,7 +21,7 @@
             <h:outputText value="#{register.registerError ? msgs.registerErrorMessage : ''}" style="color: darkred"/>
          </h:panelGrid>
          <h:commandButton value="#{msgs.registerButton}" action="#{register.doRegister}"/>
-         <h:commandButton value="#{msgs.registerBackButton}" action="login"/>
+         <h:button value="#{msgs.registerBackButton}" outcome="login"/>
       </h:form>
    </h:body>
 </html>

@@ -1,6 +1,7 @@
 package com.corejsf;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -15,11 +16,11 @@ public class HomeBean implements Serializable {
     @Inject
     private UserBean user;
 
-    public Boolean getJustRegistered() {        return justRegistered;    }
-    public void setJustRegistered(Boolean justRegistered) {        this.justRegistered = justRegistered;    }
+    public Boolean getJustRegistered() {return justRegistered;}
+    public void setJustRegistered(Boolean justRegistered) { this.justRegistered = justRegistered;}
 
     public String doLogout(){
         server.logout(user.getUsername());
-        return "login";
+        return "login?faces-redirect=true";
     }
 }

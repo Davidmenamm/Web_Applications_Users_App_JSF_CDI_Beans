@@ -2,63 +2,42 @@
 package com.corejsf;
 
 // import(s)
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.event.ValueChangeEvent;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 
 @SessionScoped
-@Named("userList")
+@Named("userListBean")
 public class UserListBean implements Serializable {
-    // atributes
     private String selectedUser;
-    @Inject
-    private ServerBean sb;
+    @EJB
+    private UserListUpdate updList;
 
-    private static Map<String,Object> userList = new LinkedHashMap<String, Object>();
-    private List<String> users = new ArrayList<>();
-
-    // getter and setter
-    public Map<String,Object> getUserList() {
-        try{
-            System.out.println("TEST!");
-            // get users list keys / names
-            userList.clear();
-            HashMap<String, Boolean> userOnlineList = sb.getUsersOnlineList();
-            for ( String name : userOnlineList.keySet() ){
-                userList.put(name,userOnlineList.get(name));
-            }
-        } catch(Exception e){
-            System.out.println(e);
-            e.printStackTrace();
-        }
-        return userList;
-    }
+    private List<String> namesList;
+    private Map<String,UserBean> usersOnline;
     public String getSelectedUser() {
         return selectedUser;
     }
     public void setSelectedUser(String selectedUser) {
-        System.out.println(selectedUser);
+        System.out.println("selector: " +selectedUser);
         this.selectedUser = selectedUser;
     }
-//    public void selectionChanged(ValueChangeEvent e){
-//        setSelectedUser((String) e.getNewValue());
-//    }
-    public List<String> getUsers() {
-        Map<String,Object> usersMap = getUserList();
-        this.users = new ArrayList<>(usersMap.keySet());
-        return this.users;
+    public void getUserListResponse(){
+        usersOnline = updList.getMap();
+        namesList = new ArrayList<>(usersOnline.keySet());
+//        namesList = updList.getList();
     }
-    public void setUsers(List<String> users) {
-        this.users = users;
+    public boolean getUserOnline(String reqUser){
+        return usersOnline.get(reqUser).getOnline();
+    }
+    public List<String> getNamesList(){
+        getUserListResponse();
+        return namesList;
     }
 }
 
