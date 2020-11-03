@@ -24,14 +24,15 @@ public class MessageBean implements Serializable {
     public void postNewMessage(){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
-        server.sendMessage(new String[]{user.getUsername(),userListBean.getSelectedUser(),dtf.format(now),enteredMessage});
+        ArrayList<String> target = userListBean.getSelectedUsers();
+        server.sendMessage(new MessageData(user.getUsername(), target,dtf.format(now),enteredMessage));
     }
 
-    public ArrayList<String[]> getMyMessages(){
+    public ArrayList<MessageData> getMyMessages(){
         return server.getMessagesTo(user.getUsername());
     }
 
-    public void deleteMyMessage(String[] myMessage){
+    public void deleteMyMessage(MessageData myMessage){
         server.deleteMessage(myMessage);
     }
 

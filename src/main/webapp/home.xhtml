@@ -3,37 +3,65 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-   <h:head>
-      <title>#{msgs.homeTitle}</title>
-   </h:head>
-   <h:body>
-      <h:form>
-         <h:commandButton value="#{msgs.homeLogoutButton}" action="#{home.doLogout}"/>
-         <br/>
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+   <title>#{msgs.homeTitle}</title>
+   <style type="text/css">
+      .user-list {
+         width: 15%;
+         min-height: 100%;
+         overflow: scroll;
+      }
+
+      .message-list {
+         width: 85%;
+      }
+
+      .top-alignment {
+         vertical-align: top;
+      }
+
+   </style>
+</h:head>
+<h:body>
+   <h:form>
+      <h:commandButton value="#{msgs.homeLogoutButton}" action="#{home.doLogout}"/>
+      <br/>
+
+   </h:form>
+   <h:panelGrid style="width: 100%; height: 100%"
+                columns="2" border="1" cellpadding="10" cellspacing="1"
+                columnClasses="user-list top-alignment, message-list top-alignment">
+      <h:column>
          <h:outputText value="#{msgs.usersListTitle}"
                        style="font-style: italic; font-size: 1.5rem"/>
-      </h:form>
-<!--      <h:panelGrid columns="2" width="50%" id="visualUserList">-->
-<!--         <ui:repeat  value="#{userListBean.namesList}" var="username">-->
-<!--            <h:outputText value="#{username}"/><h:button value="send"/>-->
-<!--         </ui:repeat>-->
-<!--      </h:panelGrid>-->
-      <h:dataTable id="visualUserList" var="username" value="#{userListBean.namesList}">
-         <h:column>
-            <h:outputText value="#{username}"/>
-         </h:column>
-         <h:column>
-            <h:outputText value="#{userListBean.getUserOnline(username)}"/>
-         </h:column>
-      </h:dataTable>
-      <h:form id="UserListForm">
-         <f:websocket channel="UserListChannel" onmessage="function x() {
-           console.log('Event activation received')
-         }">
-            <f:ajax event="UpdateListEvent"
-                    execute=":visualUserList" render=":visualUserList"/>
-         </f:websocket>
-      </h:form>
-   </h:body>
+         <h:form id="visualCheckbox">
+            <h:selectManyCheckbox value="#{userListBean.selectedUsers}" layout="pageDirection">
+               <c:forEach items="#{userListBean.namesList}" var="userobj">
+                  <f:selectItem itemValue="#{userobj.username}"
+                                itemLabel="#{userobj.online ? 'o':'x'} - #{userobj.username}"/>
+               </c:forEach>
+            </h:selectManyCheckbox>
+            <h:commandButton value="New Message" action="#{userListBean.printNamesSelected}"/>
+         </h:form>
+
+      </h:column>
+
+      <h:column>
+         Messages here
+      </h:column>
+
+
+
+   </h:panelGrid>
+
+   <h:form>
+      <f:websocket channel="UserListChannel">
+         <f:ajax event="UpdateListEvent"
+                 execute=":visualCheckbox"
+                 render=":visualCheckbox"/>
+      </f:websocket>
+   </h:form>
+</h:body>
 </html>

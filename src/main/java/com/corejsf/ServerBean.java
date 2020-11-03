@@ -1,18 +1,14 @@
 package com.corejsf;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.push.Push;
 import javax.faces.push.PushContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Singleton;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 @ApplicationScoped
@@ -20,7 +16,7 @@ import java.util.Set;
 public class ServerBean implements Serializable {
    // Static field needed
    private final HashMap<String, UserBean> users;
-   private final HashMap<String, ArrayList<String[]>> messages;
+   private final HashMap<String, ArrayList<MessageData>> messages;
    @Inject
    private DatabaseBean db;
    @EJB
@@ -30,35 +26,31 @@ public class ServerBean implements Serializable {
    @Push
    private PushContext UserListChannel;
 
-
-//   @PostConstruct
-//   private void init(){}
-
    public ServerBean(){
       users = new HashMap<>();
       messages = new HashMap<>();
-//      if(db  != null){
-         Set<String> registeredUsers = db.getUsers();
-         for (String u: registeredUsers){
-            users.put(u, new UserBean(u));
-         }
-//      }
+      Set<String> registeredUsers = db.getUsers();
+      for (String u: registeredUsers){
+         users.put(u, new UserBean(u));
+      }
    }
 
-   public HashMap<String,UserBean> getUsers(){
-      return users;
-   }
-
-   public ArrayList<String[]> getMessagesTo(String userReq){
+   public ArrayList<MessageData> getMessagesTo(String userReq){
       return messages.get(userReq);
    }
 
-   public void sendMessage(String[] newMessage){
-      getMessagesTo(newMessage[1]).add(newMessage);
+   public void sendMessage(MessageData newMessage){
+      for(String t: newMessage.getFullTarget()){
+         try {
+            getMessagesTo(t).add(newMessage.getTowards(t));
+         } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+         }
+      }
    }
 
-   public void deleteMessage(String[] oldMessage){
-      getMessagesTo(oldMessage[1]).remove(oldMessage);
+   public void deleteMessage(MessageData oldMessage){
+      getMessagesTo(oldMessage.getTarget()).remove(oldMessage);
    }
 
    public void register(String username){
@@ -77,7 +69,6 @@ public class ServerBean implements Serializable {
    }
 
    public void onChangeUserList() {
-//      updList.putList(new ArrayList<>(users.keySet()));
       updList.putMap(users);
       UserListChannel.send("UpdateListEvent");
    }

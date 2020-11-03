@@ -4,8 +4,6 @@ package com.corejsf;
 // import(s)
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.*;
@@ -14,30 +12,29 @@ import java.util.*;
 @SessionScoped
 @Named("userListBean")
 public class UserListBean implements Serializable {
-    private String selectedUser;
+    private ArrayList<String> selectedUsers;
     @EJB
     private UserListUpdate updList;
 
-    private List<String> namesList;
+    private List<UserBean> namesList;
     private Map<String,UserBean> usersOnline;
-    public String getSelectedUser() {
-        return selectedUser;
+    public ArrayList<String> getSelectedUsers() {
+        return selectedUsers;
     }
-    public void setSelectedUser(String selectedUser) {
-        System.out.println("selector: " +selectedUser);
-        this.selectedUser = selectedUser;
+    public void setSelectedUsers(ArrayList<String> selectedUser) {
+        this.selectedUsers = selectedUser;
     }
     public void getUserListResponse(){
         usersOnline = updList.getMap();
-        namesList = new ArrayList<>(usersOnline.keySet());
-//        namesList = updList.getList();
+        namesList = new ArrayList<>(usersOnline.values());
     }
-    public boolean getUserOnline(String reqUser){
-        return usersOnline.get(reqUser).getOnline();
-    }
-    public List<String> getNamesList(){
+    public List<UserBean> getNamesList(){
         getUserListResponse();
         return namesList;
+    }
+    public void printNamesSelected(){
+        System.out.println(getSelectedUsers());
+        setSelectedUsers(null);
     }
 }
 
