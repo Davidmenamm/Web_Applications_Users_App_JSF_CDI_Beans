@@ -1,6 +1,7 @@
 package com.corejsf;
 
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 // or import javax.faces.bean.SessionScoped;
@@ -10,6 +11,9 @@ import java.io.Serializable;
 public class UserBean implements Serializable {
    private String username;
    private Boolean online = false;
+   private Boolean hasMessage = false;
+   @Inject
+   ServerBean server;
 
    public UserBean(){
 
@@ -28,8 +32,20 @@ public class UserBean implements Serializable {
    public void setUsername(String newValue) { username = newValue; }
 
 
-   public Boolean getOnline() {      return online;   }
-   public void setOnline(Boolean online) {      this.online = online;   }
+   public Boolean getOnline() { return online;   }
+   public void setOnline(Boolean online) { this.online = online;   }
 
+   public Boolean getHasMessage() { return hasMessage;}
+   public void setHasMessage(Boolean hasMessage) { this.hasMessage = hasMessage;}
+   public void setHasMessageTrue() { this.hasMessage = true;}
+
+   public void ignoreNotification(){
+      hasMessage = false;
+   }
+   public String acceptNotification(){
+      server.markAllAsRead(username);
+      hasMessage = false;
+      return "message_rw";
+   }
 
 }

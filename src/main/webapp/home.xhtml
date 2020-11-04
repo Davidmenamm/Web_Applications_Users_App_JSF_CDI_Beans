@@ -25,6 +25,16 @@
    </style>
 </h:head>
 <h:body>
+   <h:form id="notification">
+      <h:panelGrid   style="width: 50%; height: 100%; display:#{(user.hasMessage)?'block':'none'}"
+                    columns="2" border="1" cellpadding="10" cellspacing="1">
+         <h:column>
+            Looks like you got new messages
+            <h:commandButton value="#{msgs.notifReadMessages}" action="#{user.acceptNotification}"/>
+            <h:commandButton value="#{msgs.notifIgnoreMessages}" action="#{user.ignoreNotification}"/>
+         </h:column>
+      </h:panelGrid>
+   </h:form>
    <h:form>
       <h:commandButton value="#{msgs.homeLogoutButton}" action="#{home.doLogout}"/>
       <br/>
@@ -61,6 +71,11 @@
          <f:ajax event="UpdateListEvent"
                  execute=":visualCheckbox"
                  render=":visualCheckbox"/>
+      </f:websocket>
+      <f:websocket channel="NewMessageChannel" user="#{user.username}">
+         <f:ajax event="NewMessageEvent"
+                 listener="#{user.setHasMessageTrue}"
+                 render=":notification"/>
       </f:websocket>
    </h:form>
 </h:body>
