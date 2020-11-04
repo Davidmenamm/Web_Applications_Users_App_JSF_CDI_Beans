@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
-@Named("message_rw")
-@ViewScoped
+@Named("writeMessage")
+@SessionScoped
 public class MessageBean implements Serializable {
     @Inject
     private ServerBean server;
@@ -18,6 +18,8 @@ public class MessageBean implements Serializable {
     private UserBean user;
     @Inject
     private UserListBean userListBean;
+    @Inject
+    private HomeBean home;
 
     private String enteredMessage;
 
@@ -26,6 +28,10 @@ public class MessageBean implements Serializable {
         LocalDateTime now = LocalDateTime.now();
         ArrayList<String> target = userListBean.getSelectedUsers();
         server.sendMessage(new MessageData(user.getUsername(), target,dtf.format(now),enteredMessage));
+
+        enteredMessage = "";
+        home.setJustRegistered(false);
+        home.setMessageSent(true);
     }
 
     public ArrayList<MessageData> getMyMessages(){

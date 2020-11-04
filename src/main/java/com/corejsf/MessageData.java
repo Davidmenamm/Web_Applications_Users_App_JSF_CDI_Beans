@@ -20,10 +20,13 @@ public class MessageData {
         this.read = false;
     }
 
-    public MessageData getTowards(String end) throws CloneNotSupportedException {
-        MessageData newTemp = (MessageData) this.clone();
-        newTemp.setTarget(end);
-        return newTemp;
+    public MessageData(MessageData msg){
+        this.sender = msg.sender;
+        this.fullTarget = msg.fullTarget;
+        this.displayfullTarget = msg.displayfullTarget;
+        this.message = msg.message;
+        this.postDate = msg.postDate;
+        this.read = msg.read;
     }
 
     public void setTarget(String target) {

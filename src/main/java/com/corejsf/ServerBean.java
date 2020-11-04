@@ -45,11 +45,9 @@ public class ServerBean implements Serializable {
 
       for(String t: newMessage.getFullTarget()){
          usernames.add(t);
-         try {
-            getMessagesTo(t).add(newMessage.getTowards(t));
-         } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-         }
+
+         getMessagesTo(t).add(new MessageData(newMessage));
+
       }
       ////notify those users
       onNotifyMessage(usernames);

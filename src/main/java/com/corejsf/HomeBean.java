@@ -11,6 +11,7 @@ import java.io.Serializable;
 @SessionScoped
 public class HomeBean implements Serializable {
     Boolean justRegistered = false;
+    Boolean messageSent = false;
     @Inject
     private ServerBean server;
     @Inject
@@ -18,6 +19,9 @@ public class HomeBean implements Serializable {
 
     public Boolean getJustRegistered() {return justRegistered;}
     public void setJustRegistered(Boolean justRegistered) { this.justRegistered = justRegistered;}
+
+    public Boolean getMessageSent() {        return messageSent;    }
+    public void setMessageSent(Boolean messageSent) {        this.messageSent = messageSent;    }
 
     public String doLogout(){
         server.logout(user.getUsername());
