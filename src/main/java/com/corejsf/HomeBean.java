@@ -27,6 +27,8 @@ public class HomeBean implements Serializable {
 
     public String doLogout(){
         server.logout(user.getUsername());
+        messageSent = false;
+        justRegistered = false;
         return "login?faces-redirect=true";
     }
 

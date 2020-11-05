@@ -63,6 +63,8 @@ public class InboxBean implements Serializable {
     public void deleteMessage(){
         server.deleteMessage(messageData);
         data.remove(messageData);
+        home.setMessageSent(false);
+        home.setJustRegistered(false);
         showOne();
     }
 }
