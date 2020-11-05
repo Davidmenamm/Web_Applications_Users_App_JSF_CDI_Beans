@@ -45,6 +45,10 @@ public class LoginBean implements Serializable {
          user.setUsername(username);
          user.setOnline(true);
 
+         if (server.checkUnreadMessages(this.username)){
+            user.setHasMessageTrue();
+         }
+
          home.setJustRegistered(false);
 
          return "home?faces-redirect=true";

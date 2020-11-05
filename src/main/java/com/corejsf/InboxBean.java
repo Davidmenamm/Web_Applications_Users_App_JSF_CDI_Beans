@@ -21,8 +21,17 @@ public class InboxBean implements Serializable {
     @Inject
     private HomeBean home;
 
+    public InboxBean(){
+        data = new ArrayList<>();
+        showOne();
+    }
+
+    public boolean getCanDelete(){
+        return data.isEmpty();
+    }
+
     public void loadData() {
-        this.data = server.getMessagesTo(userBean.getUsername());
+        this.data = new ArrayList<>(server.getMessagesTo(userBean.getUsername()));
         showOne();
         userBean.acceptNotification();
         home.hideNewMessage();
@@ -61,6 +70,7 @@ public class InboxBean implements Serializable {
     }
 
     public void deleteMessage(){
+//        if(data.isEmpty()) return;
         server.deleteMessage(messageData);
         data.remove(messageData);
         home.setMessageSent(false);

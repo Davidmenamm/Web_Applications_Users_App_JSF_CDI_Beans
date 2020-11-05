@@ -1,6 +1,8 @@
 package com.corejsf;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,8 +29,10 @@ public class HomeBean implements Serializable {
 
     public String doLogout(){
         server.logout(user.getUsername());
+        ExternalContext ectx = FacesContext.getCurrentInstance().getExternalContext();
         messageSent = false;
         justRegistered = false;
+        ectx.invalidateSession();
         return "login?faces-redirect=true";
     }
 

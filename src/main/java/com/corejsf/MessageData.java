@@ -34,6 +34,10 @@ public class MessageData {
         return fullTarget;
     }
 
+    public String getDisplayfullTarget(){
+        return displayfullTarget;
+    }
+
     public String getTarget(){
         return target;
     }

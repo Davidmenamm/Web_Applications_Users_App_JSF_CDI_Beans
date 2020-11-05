@@ -104,16 +104,22 @@ public class ServerBean implements Serializable {
       }
    }
 
-   private Boolean hasUnreadMessages(String username) {
+   private boolean hasUnreadMessages(String username) {
       ArrayList<MessageData> msgList = messages.get(username);
-      Boolean hasUnread = false;
+      boolean hasUnread = false;
 
       for(MessageData msg: msgList){
-         if(!msg.getRead())
+         if (!msg.getRead()) {
             hasUnread = true;
+            break;
+         }
       }
 
       return hasUnread;
+   }
+
+   public boolean checkUnreadMessages(String username){
+      return hasUnreadMessages(username);
    }
 
 }

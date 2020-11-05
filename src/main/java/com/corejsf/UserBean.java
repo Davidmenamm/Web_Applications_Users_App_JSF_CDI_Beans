@@ -1,8 +1,10 @@
 package com.corejsf;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 // or import javax.faces.bean.SessionScoped;
 
@@ -14,8 +16,8 @@ public class UserBean implements Serializable {
    private Boolean hasMessage = false;
    @Inject
    ServerBean server;
-   @Inject
-   HomeBean home;
+//   @Inject
+//   HomeBean home;
 
    public UserBean(){
 
@@ -23,6 +25,7 @@ public class UserBean implements Serializable {
 
    public UserBean(String username){
       this.username = username;
+
    }
 
    public UserBean(String username, Boolean online){
@@ -47,7 +50,6 @@ public class UserBean implements Serializable {
    }
    public void acceptNotification(){
       hasMessage = false;
-
    }
 
 }
