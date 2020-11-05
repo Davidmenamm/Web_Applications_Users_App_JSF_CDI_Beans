@@ -18,12 +18,14 @@ public class InboxBean implements Serializable {
     private ServerBean server;
     @Inject
     private UserBean userBean;
-    public InboxBean() {
-//        loadData();
-        data = new ArrayList<>();
-    }
-    private void loadData() {
+
+    public void loadData() {
         this.data = server.getMessagesTo(userBean.getUsername());
+        showOne();
+        userBean.acceptNotification();
+    }
+
+    private void showOne(){
         if(data.isEmpty()){
             this.messageData = new MessageData("Sistema",new ArrayList<>(),"","No tienes mensajes.");
         } else {
@@ -45,19 +47,10 @@ public class InboxBean implements Serializable {
     public void valueChanged(ValueChangeEvent e) {
         int id = (int) e.getNewValue();
         setMessage(data.get(id));
-//        String id = (String) e.getNewValue();
-//        // identify the object index of the given event name
-//        List<String> names = new ArrayList<>();
-//        for (int i = 0; i < data.toArray().length; i++){
-//            names.add(data.get(i).getName());
-//        }
-//        int wantedIdx = names.indexOf(id);
-//        // get description for object at that idx
-//        String desiredDesc = data.get(wantedIdx).getDesc();
-//        setMessage(desiredDesc);
     }
     public void setMessage(MessageData s) {
         messageData = s;
+        messageData.markRead();
     }
     public MessageData getMessage() {
         return messageData;
@@ -65,6 +58,7 @@ public class InboxBean implements Serializable {
 
     public void deleteMessage(){
         server.deleteMessage(messageData);
-        loadData();
+        data.remove(messageData);
+        showOne();
     }
 }

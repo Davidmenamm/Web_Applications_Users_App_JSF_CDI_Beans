@@ -21,6 +21,11 @@
          height: 90%;
       }
 
+      .mail-dataset{
+         width: fit-content;
+         height: 90%;
+      }
+
       .message-list {
          width: 85%;
          height: 90%;
@@ -49,7 +54,7 @@
                     columns="2" border="1" cellpadding="10" cellspacing="1">
          <h:column>
             Looks like you got new messages
-            <h:commandButton value="#{msgs.notifReadMessages}" action="#{user.acceptNotification}"/>
+            <h:commandButton value="#{msgs.notifReadMessages}" action="#{inboxBean.loadData}"/>
             <h:commandButton value="#{msgs.notifIgnoreMessages}" action="#{user.ignoreNotification}"/>
          </h:column>
       </h:panelGrid>
@@ -97,9 +102,9 @@
 
                <h:form id="visualInbox">
                   <h:panelGrid styleClass="full_width" columns="2"
-                               columnClasses="mail-list top-alignment, message-list message-reader top-alignment">
+                               columnClasses="mail-dataset top-alignment, message-list message-reader top-alignment">
                      <h:column>
-                        <h:selectOneListbox id="list"
+                        <h:selectOneListbox id="list" size="10"
                                             value="#{inboxBean.todo}"
                                             valueChangeListener="#{inboxBean.valueChanged}"
                                             onchange="submit()">

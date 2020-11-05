@@ -45,7 +45,7 @@ public class UserBean implements Serializable {
    public String acceptNotification(){
       server.markAllAsRead(username);
       hasMessage = false;
-      return "#";
+      return "home";
    }
 
 }
