@@ -7,6 +7,7 @@ import javax.faces.push.PushContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.*;
 
 @ApplicationScoped
@@ -56,6 +57,13 @@ public class ServerBean implements Serializable {
 
    public void deleteMessage(MessageData oldMessage){
       getMessagesTo(oldMessage.getTarget()).remove(oldMessage);
+   }
+
+   public void markAsRead(MessageData oldMessage){
+      ArrayList<MessageData> myMsgs = getMessagesTo(oldMessage.getTarget());
+      int wantedIdx = myMsgs.indexOf(oldMessage);
+      MessageData currMsg = myMsgs.get(wantedIdx);
+      currMsg.markRead();
    }
 
    public void register(String username){

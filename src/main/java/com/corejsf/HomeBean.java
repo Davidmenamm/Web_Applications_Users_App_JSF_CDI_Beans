@@ -17,6 +17,8 @@ public class HomeBean implements Serializable {
     @Inject
     private UserBean user;
 
+    private boolean showNewMessage = false;
+
     public Boolean getJustRegistered() {return justRegistered;}
     public void setJustRegistered(Boolean justRegistered) { this.justRegistered = justRegistered;}
 
@@ -26,5 +28,15 @@ public class HomeBean implements Serializable {
     public String doLogout(){
         server.logout(user.getUsername());
         return "login?faces-redirect=true";
+    }
+
+    public void hideNewMessage(){
+        showNewMessage = false;
+    }
+    public void doShowNewMessage(){
+        showNewMessage = true;
+    }
+    public boolean getShowNewMessage(){
+        return showNewMessage;
     }
 }

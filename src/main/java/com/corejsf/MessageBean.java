@@ -38,7 +38,7 @@ public class MessageBean implements Serializable {
         home.setJustRegistered(false);
         home.setMessageSent(true);
         userListBean.setSelectedUsers(null);
-        userListBean.hideNewMessage();
+        home.hideNewMessage();
     }
 
     public String getEnteredMessage() {

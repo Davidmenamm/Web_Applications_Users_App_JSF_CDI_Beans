@@ -61,6 +61,7 @@
    </h:form>
    <h:form>
       <h:commandButton value="#{msgs.homeLogoutButton}" action="#{home.doLogout}"/>
+      <h:commandButton value="#{msgs.notifReadMessages}" action="#{inboxBean.loadData}"/>
       <h:outputText value="#{msgs.homeJustRegistered}" rendered="#{home.justRegistered}"/>
       <h:outputText value="#{msgs.homeMessageSent}" rendered="#{home.messageSent}"/>
       <br/>
@@ -73,7 +74,7 @@
          <h:outputText value="#{msgs.usersListTitle}"
                        style="font-style: italic; font-size: 1.5rem"/>
          <h:form id="visualCheckbox">
-            <h:commandButton value="New Message" action="#{userListBean.doShowNewMessage}"/>
+            <h:commandButton value="New Message" action="#{home.doShowNewMessage}"/>
             <h:selectManyCheckbox value="#{userListBean.selectedUsers}" layout="pageDirection">
                <c:forEach items="#{userListBean.namesList}" var="userobj">
                   <f:selectItem itemValue="#{userobj.username}"
@@ -83,12 +84,12 @@
          </h:form>
       </h:column>
       <c:choose>
-         <c:when test="#{userListBean.showNewMessage}">
+         <c:when test="#{home.showNewMessage}">
             <h:column>
                <h:form id="visualNewMessage">
                   <h:inputTextarea styleClass="full_width" value="#{writeMessage.enteredMessage}" />
                   <h:commandButton value="Send message" action="#{writeMessage.postNewMessage}"/>
-                  <h:commandButton value="Discard" action="#{userListBean.hideNewMessage}"/>
+                  <h:commandButton value="Discard" action="#{home.hideNewMessage}"/>
                </h:form>
             </h:column>
          </c:when>
@@ -109,7 +110,8 @@
                                             valueChangeListener="#{inboxBean.valueChanged}"
                                             onchange="submit()">
                            <c:forEach items="#{inboxBean.data}" var="msgobj" varStatus="loop">
-                              <f:selectItem itemValue="#{loop.index}" itemLabel="#{msgobj.sender}-#{msgobj.postDate}"/>
+                              <f:selectItem itemValue="#{loop.index}"
+                                            itemLabel="#{msgobj.read ? '✔✔' : '--'}-#{msgobj.sender}-#{msgobj.postDate}"/>
                            </c:forEach>
                         </h:selectOneListbox>
                      </h:column>

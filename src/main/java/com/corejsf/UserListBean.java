@@ -19,7 +19,6 @@ public class UserListBean implements Serializable {
     private List<UserBean> namesList;
     private Map<String,UserBean> usersOnline;
 
-    private boolean showNewMessage = false;
     public ArrayList<String> getSelectedUsers() {
         return selectedUsers;
     }
@@ -33,15 +32,6 @@ public class UserListBean implements Serializable {
     public List<UserBean> getNamesList(){
         getUserListResponse();
         return namesList;
-    }
-    public void hideNewMessage(){
-        showNewMessage = false;
-    }
-    public void doShowNewMessage(){
-        showNewMessage = true;
-    }
-    public boolean getShowNewMessage(){
-        return showNewMessage;
     }
 }
 

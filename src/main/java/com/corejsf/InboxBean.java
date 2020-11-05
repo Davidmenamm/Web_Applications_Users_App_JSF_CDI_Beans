@@ -18,11 +18,14 @@ public class InboxBean implements Serializable {
     private ServerBean server;
     @Inject
     private UserBean userBean;
+    @Inject
+    private HomeBean home;
 
     public void loadData() {
         this.data = server.getMessagesTo(userBean.getUsername());
         showOne();
         userBean.acceptNotification();
+        home.hideNewMessage();
     }
 
     private void showOne(){
@@ -51,6 +54,7 @@ public class InboxBean implements Serializable {
     public void setMessage(MessageData s) {
         messageData = s;
         messageData.markRead();
+        server.markAsRead(s);
     }
     public MessageData getMessage() {
         return messageData;
