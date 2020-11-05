@@ -20,17 +20,14 @@ public class MessageData {
         this.read = false;
     }
 
-    public MessageData(MessageData msg){
+    public MessageData(MessageData msg, String t){
         this.sender = msg.sender;
         this.fullTarget = msg.fullTarget;
         this.displayfullTarget = msg.displayfullTarget;
         this.message = msg.message;
         this.postDate = msg.postDate;
         this.read = msg.read;
-    }
-
-    public void setTarget(String target) {
-        this.target = target;
+        this.target = t;
     }
 
     public ArrayList<String> getFullTarget() {
@@ -41,10 +38,19 @@ public class MessageData {
         return target;
     }
 
-    public boolean isRead(){
+    public boolean getRead(){
         return read;
     }
 
+    public String getSender(){
+        return sender;
+    }
+    public String getPostDate(){
+        return postDate;
+    }
+    public String getTextMessage(){
+        return message;
+    }
     public void markRead(){
         this.read = true;
     }

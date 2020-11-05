@@ -46,7 +46,7 @@ public class ServerBean implements Serializable {
       for(String t: newMessage.getFullTarget()){
          usernames.add(t);
 
-         getMessagesTo(t).add(new MessageData(newMessage));
+         getMessagesTo(t).add(new MessageData(newMessage,t));
 
       }
       ////notify those users
@@ -101,7 +101,7 @@ public class ServerBean implements Serializable {
       Boolean hasUnread = false;
 
       for(MessageData msg: msgList){
-         if(!msg.isRead())
+         if(!msg.getRead())
             hasUnread = true;
       }
 

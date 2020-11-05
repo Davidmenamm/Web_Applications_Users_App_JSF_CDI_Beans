@@ -10,18 +10,35 @@
 <h:head>
    <title>#{msgs.homeTitle}</title>
    <style type="text/css">
+      html, body { height: 100%; width: 100%; margin: 0; }
       .user-list {
          width: 15%;
-         min-height: 100%;
+         height: 90%;
          overflow: scroll;
+      }
+      .mail-list {
+         width: 15%;
+         height: 90%;
       }
 
       .message-list {
          width: 85%;
+         height: 90%;
+      }
+
+      .message-reader{
+         border: 2px solid black;
+         padding-left: 10px;
+         margin: auto;
       }
 
       .top-alignment {
          vertical-align: top;
+      }
+
+      .full_width {
+         width: 100%;
+         height: 100%;
       }
 
    </style>
@@ -44,35 +61,72 @@
       <br/>
 
    </h:form>
-   <h:form id="visualCheckbox">
-   <h:panelGrid style="width: 100%; height: 100%"
+   <h:panelGrid style="width: 100%; height: 90%"
                 columns="2" border="1" cellpadding="10" cellspacing="1"
                 columnClasses="user-list top-alignment, message-list top-alignment">
       <h:column>
          <h:outputText value="#{msgs.usersListTitle}"
                        style="font-style: italic; font-size: 1.5rem"/>
-
+         <h:form id="visualCheckbox">
+            <h:commandButton value="New Message" action="#{userListBean.doShowNewMessage}"/>
             <h:selectManyCheckbox value="#{userListBean.selectedUsers}" layout="pageDirection">
                <c:forEach items="#{userListBean.namesList}" var="userobj">
                   <f:selectItem itemValue="#{userobj.username}"
                                 itemLabel="#{userobj.online ? 'on ':'off'} - #{userobj.username}"/>
                </c:forEach>
             </h:selectManyCheckbox>
-
-
+         </h:form>
       </h:column>
+      <c:choose>
+         <c:when test="#{userListBean.showNewMessage}">
+            <h:column>
+               <h:form id="visualNewMessage">
+                  <h:inputTextarea styleClass="full_width" value="#{writeMessage.enteredMessage}" />
+                  <h:commandButton value="Send message" action="#{writeMessage.postNewMessage}"/>
+                  <h:commandButton value="Discard" action="#{userListBean.hideNewMessage}"/>
+               </h:form>
+            </h:column>
+         </c:when>
+         <c:otherwise>
+            <h:column>
+               <!-- Inbox -->
+               <h:outputText id="titleInbox" value="#{msgs.inboxTitle}" />
+               <!-- Saltos de linea -->
+               <br />
+               <!-- Lista de mensajes -->
 
-      <h:column>
-
-            <h:inputTextarea value="#{writeMessage.enteredMessage}" />
-            <h:commandButton value="Send message" action="#{writeMessage.postNewMessage}"/>
-
-      </h:column>
-
-
-
+               <h:form id="visualInbox">
+                  <h:panelGrid styleClass="full_width" columns="2"
+                               columnClasses="mail-list top-alignment, message-list message-reader top-alignment">
+                     <h:column>
+                        <h:selectOneListbox id="list"
+                                            value="#{inboxBean.todo}"
+                                            valueChangeListener="#{inboxBean.valueChanged}"
+                                            onchange="submit()">
+                           <c:forEach items="#{inboxBean.data}" var="msgobj" varStatus="loop">
+                              <f:selectItem itemValue="#{loop.index}" itemLabel="#{msgobj.sender}-#{msgobj.postDate}"/>
+                           </c:forEach>
+                        </h:selectOneListbox>
+                     </h:column>
+                     <h:column>
+                        <h:panelGrid columns="2" columnClasses="mail-list, message-list">
+                           <h:outputText value="From: "/>
+                           <h:outputText value="#{inboxBean.message.sender}" />
+                           <h:outputText value="To: "/>
+                           <h:outputText value="#{inboxBean.message.target}" />
+                           <h:outputText value="Date: "/>
+                           <h:outputText value="#{inboxBean.message.postDate}" />
+                           <h:outputText value="Message: "/>
+                           <h:outputText value="#{inboxBean.message.textMessage}" />
+                           <h:commandButton value="Delete" action="#{inboxBean.deleteMessage}"/>
+                        </h:panelGrid>
+                     </h:column>
+                  </h:panelGrid>
+               </h:form>
+            </h:column>
+         </c:otherwise>
+      </c:choose>
    </h:panelGrid>
-</h:form>
 
    <h:form>
       <f:websocket channel="UserListChannel">
@@ -87,24 +141,6 @@
       </f:websocket>
    </h:form>
 
-   <!-- Saltos de linea -->
-   <br />
-   <br />
-   <!-- Inbox -->
-   <h:outputText id="titleInbox" value="#{msgs.inboxTitle}" />
-   <!-- Saltos de linea -->
-   <br />
-   <br />
-   <!-- Lista de mensajes -->
-   <h:form id="visualInbox">
-      <h:selectOneListbox id="list" size="10"
-                          value="#{inboxBean.todo}"
-                          valueChangeListener="#{inboxBean.valueChanged}"
-                          onchange="submit()">
-         <f1:selectItems value="#{inboxBean.data}"/>
-      </h:selectOneListbox>
-      <!-- Detalle de mensaje seleccionado -->
-      <h:inputTextarea value="#{inboxBean.message}" cols="30" rows="10" disabled="true"/>
-   </h:form>
+
 </h:body>
 </html>

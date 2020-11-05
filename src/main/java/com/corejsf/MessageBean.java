@@ -24,22 +24,21 @@ public class MessageBean implements Serializable {
     private String enteredMessage;
 
     public void postNewMessage(){
+        ArrayList<String> target = userListBean.getSelectedUsers();
+        if(target.isEmpty()){
+            home.setJustRegistered(false);
+            home.setMessageSent(false);
+            return;
+        }
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
-        ArrayList<String> target = userListBean.getSelectedUsers();
         server.sendMessage(new MessageData(user.getUsername(), target,dtf.format(now),enteredMessage));
 
         enteredMessage = "";
         home.setJustRegistered(false);
         home.setMessageSent(true);
-    }
-
-    public ArrayList<MessageData> getMyMessages(){
-        return server.getMessagesTo(user.getUsername());
-    }
-
-    public void deleteMyMessage(MessageData myMessage){
-        server.deleteMessage(myMessage);
+        userListBean.setSelectedUsers(null);
+        userListBean.hideNewMessage();
     }
 
     public String getEnteredMessage() {

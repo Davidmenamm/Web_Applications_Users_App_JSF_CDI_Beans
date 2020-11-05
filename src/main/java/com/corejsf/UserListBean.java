@@ -18,6 +18,8 @@ public class UserListBean implements Serializable {
 
     private List<UserBean> namesList;
     private Map<String,UserBean> usersOnline;
+
+    private boolean showNewMessage = false;
     public ArrayList<String> getSelectedUsers() {
         return selectedUsers;
     }
@@ -32,9 +34,14 @@ public class UserListBean implements Serializable {
         getUserListResponse();
         return namesList;
     }
-    public void printNamesSelected(){
-        System.out.println(getSelectedUsers());
-        setSelectedUsers(null);
+    public void hideNewMessage(){
+        showNewMessage = false;
+    }
+    public void doShowNewMessage(){
+        showNewMessage = true;
+    }
+    public boolean getShowNewMessage(){
+        return showNewMessage;
     }
 }
 
