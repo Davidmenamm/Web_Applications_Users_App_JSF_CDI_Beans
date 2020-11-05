@@ -53,8 +53,8 @@ public class InboxBean implements Serializable {
     }
     public void setMessage(MessageData s) {
         messageData = s;
-        messageData.markRead();
         server.markAsRead(s);
+        messageData.markRead();
     }
     public MessageData getMessage() {
         return messageData;

@@ -14,6 +14,8 @@ public class UserBean implements Serializable {
    private Boolean hasMessage = false;
    @Inject
    ServerBean server;
+   @Inject
+   HomeBean home;
 
    public UserBean(){
 
@@ -41,11 +43,11 @@ public class UserBean implements Serializable {
 
    public void ignoreNotification(){
       hasMessage = false;
-   }
-   public String acceptNotification(){
       server.markAllAsRead(username);
+   }
+   public void acceptNotification(){
       hasMessage = false;
-      return "home";
+
    }
 
 }
