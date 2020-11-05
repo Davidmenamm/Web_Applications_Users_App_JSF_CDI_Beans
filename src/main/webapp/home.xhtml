@@ -108,19 +108,17 @@
                            </c:forEach>
                         </h:selectOneListbox>
                      </h:column>
-                     <h:column>
-                        <h:panelGrid columns="2" columnClasses="mail-list, message-list">
-                           <h:outputText value="From: "/>
-                           <h:outputText value="#{inboxBean.message.sender}" />
-                           <h:outputText value="To: "/>
-                           <h:outputText value="#{inboxBean.message.target}" />
-                           <h:outputText value="Date: "/>
-                           <h:outputText value="#{inboxBean.message.postDate}" />
-                           <h:outputText value="Message: "/>
-                           <h:outputText value="#{inboxBean.message.textMessage}" />
-                           <h:commandButton value="Delete" action="#{inboxBean.deleteMessage}"/>
-                        </h:panelGrid>
-                     </h:column>
+                     <h:panelGrid columns="2" columnClasses="mail-list, message-list">
+                        <h:outputText value="From: "/>
+                        <h:outputText value="#{inboxBean.message.sender}" />
+                        <h:outputText value="To: "/>
+                        <h:outputText value="#{inboxBean.message.target}" />
+                        <h:outputText value="Date: "/>
+                        <h:outputText value="#{inboxBean.message.postDate}" />
+                        <h:outputText value="Message: "/>
+                        <h:outputText value="#{inboxBean.message.textMessage}" />
+                        <h:commandButton value="Delete" action="#{inboxBean.deleteMessage}"/>
+                     </h:panelGrid>
                   </h:panelGrid>
                </h:form>
             </h:column>
